@@ -7,7 +7,7 @@ typedef struct CTest     CTest;
 typedef struct CTestCase CTestCase;
 
 typedef void (*CTestFunction) (CTest *test, gpointer data);
-typedef void (*CTestCaseFunction) (CTestCase *tc, gpointer *data);
+typedef void (*CTestCaseFunction) (CTestCase *tc, gpointer data);
 
 struct CTest {
 	CTestFunction  set_up;
@@ -16,6 +16,8 @@ struct CTest {
 
 	gint           cases_total;
 	gint           cases_ok;
+
+	gboolean       fork_tests;
 
 	GList         *test_cases;
 };
@@ -45,6 +47,8 @@ ctest_add_case_full (CTest *test, const gchar *name, CTestCaseFunction func);
 gboolean
 ctest_run (CTest *test);
 
+int
+ctest_finish (CTest *tes);
 
 CTestCase *
 ctest_case_new (CTestCaseFunction func);
@@ -74,7 +78,7 @@ void ctest_case_assert_not_reached  (CTestCase *tc, const gchar *file, gint line
 	ctest_case_assert(tc, (expected)==(got), __FILE__, __LINE__, "Expected `"  #expected "' got `" #got "'")
 
 #define ctest_assert_equal_string(tc, expected, got)\
-	ctest_case_assert_equal_string(tc, expected, got, __FILE__, __LINE__, args...)
+	ctest_case_assert_equal_string(tc, expected, got, __FILE__, __LINE__)
 
 #define ctest_assert_not_reached(tc)\
 	ctest_case_assert_not_reached(tc, __FILE__, __LINE__)

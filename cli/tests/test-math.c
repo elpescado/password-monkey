@@ -4,7 +4,7 @@
 
 
 void
-test_addition (CTestCase *ct, gpointer *data)
+test_addition (CTestCase *ct, gpointer data)
 {
 	ctest_assert_true (ct, 1 + 1 == 2);
 	ctest_assert_true (ct, 2 + 2 == 4);
@@ -14,11 +14,12 @@ test_addition (CTestCase *ct, gpointer *data)
 
 
 void
-test_subtraction (CTestCase *ct, gpointer *data)
+test_subtraction (CTestCase *ct, gpointer data)
 {
 	ctest_assert_equal (ct, 1 - 0,  1);
 	ctest_assert_equal (ct, 0 - 1, -1);
 }
+
 
 
 int main (int argc, char *argv[])
@@ -30,7 +31,7 @@ int main (int argc, char *argv[])
 
 	ctest_run (test);
 
-	ctest_free (test);
+	//ctest_free (test);
 
-	return EXIT_SUCCESS;
+	return ctest_finish (test);
 }
