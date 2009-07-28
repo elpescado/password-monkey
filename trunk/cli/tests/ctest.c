@@ -30,7 +30,7 @@ ctest_free (CTest *test)
 }
 
 
-void
+CTestCase *
 ctest_add_case_full (CTest *test, const gchar *name, CTestCaseFunction func)
 {
 	CTestCase *tc = ctest_case_new (func);
@@ -38,6 +38,44 @@ ctest_add_case_full (CTest *test, const gchar *name, CTestCaseFunction func)
 	tc->name = g_strdup (name);
 
 	test->test_cases = g_list_append (test->test_cases, tc);
+
+	return tc;
+}
+
+
+CTestCase *
+ctest_add_case_full_dataset (CTest             *test,
+                             const gchar       *name,
+                             CTestCaseFunction  func,
+                             const void        *data,
+                             size_t             element_size,
+                             size_t             n_elements)
+{
+	CTestCase *tc;
+
+	tc = ctest_add_case_full (test, name, func);
+
+	/*
+	g_printerr ("Data: %p\n", data);
+	g_printerr ("Element size: %d\n", element_size);
+	g_printerr ("Number of elements: %d\n", n_elements);
+	*/
+
+	tc->dataset = data;
+	tc->dataset_size = n_elements;
+	tc->dataset_item_size = element_size;
+
+	return tc;
+}
+
+
+const void *
+ctest_case_get_data (CTestCase *tc)
+{
+	if (tc->dataset)
+		return tc->dataset + tc->dataset_iter*tc->dataset_item_size;	
+	else
+		return NULL;
 }
 
 
@@ -46,13 +84,13 @@ ctest_run_test_case_real (CTest *test, CTestCase *tc)
 {
 	tc->func (tc, test->test_data);
 
-	g_printerr (" -> %d of %d test cases ok\n", tc->asserts_ok, tc->asserts_total);
+	g_printerr (" -> %d of %d asserts ok\n", tc->asserts_ok, tc->asserts_total);
 	return tc->asserts_total == tc->asserts_ok;
 }
 
 
 gboolean
-ctest_run_test_case (CTest *test, CTestCase *tc)
+ctest_run_single_test_case (CTest *test, CTestCase *tc)
 {
 	tc->asserts_total = tc->asserts_ok = 0;
 
@@ -101,8 +139,6 @@ ctest_run_test_case (CTest *test, CTestCase *tc)
 
 				return FALSE;
 			}
-
-
 		}
 	} else {
 		return ctest_run_test_case_real (test, tc);
@@ -111,6 +147,19 @@ ctest_run_test_case (CTest *test, CTestCase *tc)
 	return FALSE;
 }
 
+gboolean
+ctest_run_test_case (CTest *test, CTestCase *tc)
+{
+	if (tc->dataset) {
+		gboolean ok = TRUE;
+		for (tc->dataset_iter = 0; tc->dataset_iter < tc->dataset_size; tc->dataset_iter++) {
+			ok = ok && ctest_run_single_test_case (test, tc);
+		}
+		return ok;
+	} else {
+		return ctest_run_single_test_case (test, tc);
+	}
+}
 
 gboolean
 ctest_run (CTest *test)
