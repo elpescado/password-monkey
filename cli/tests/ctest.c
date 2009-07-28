@@ -2,6 +2,7 @@
 #include <stdarg.h>
 #include <stdlib.h>
 #include <string.h>
+#include <math.h>
 
 #include <sys/types.h>
 #include <sys/wait.h>
@@ -248,13 +249,43 @@ void ctest_case_assert_true         (CTestCase *tc, gint condition, const gchar 
 }
 */
 
-void ctest_case_assert_equal_int    (CTestCase *tc, gint i1, gint i2, const gchar *file, gint line)
+
+void ctest_case_assert_equali    (CTestCase *tc, gint expected, gint got, const gchar *file, gint line)
 {
+	ctest_case_assert (tc, expected == got, file, line, "Expected %d got %d", expected, got);
 }
 
 
-void ctest_case_assert_equal_long   (CTestCase *tc, glong l1, glong l2, const gchar *file, gint line)
+void ctest_case_assert_equall    (CTestCase *tc, glong expected, glong got, const gchar *file, gint line)
 {
+	ctest_case_assert (tc, expected == got, file, line, "Expected %ld got %ld", expected, got);
+}
+
+
+void ctest_case_assert_equals    (CTestCase *tc, gshort expected, gshort got, const gchar *file, gint line)
+{
+	ctest_case_assert (tc, expected == got, file, line, "Expected %hd got %hd", expected, got);
+}
+
+
+void ctest_case_assert_equalc    (CTestCase *tc, gchar expected, gchar got, const gchar *file, gint line)
+{
+	ctest_case_assert (tc, expected == got, file, line, "Expected 0x%02x ('%c') got 0x%02x ('%c')",
+	                   (int)expected, expected, (int)got, got);
+}
+
+
+void ctest_case_assert_equalf    (CTestCase *tc, gfloat expected, gfloat got, gfloat tolerance, const gchar *file, gint line)
+{
+	ctest_case_assert (tc, fabsf (expected - got) < tolerance,
+	                   file, line, "Expected %f got %f", expected, got);
+}
+
+
+void ctest_case_assert_equald    (CTestCase *tc, gdouble expected, gdouble got, gdouble tolerance, const gchar *file, gint line)
+{
+	ctest_case_assert (tc, fabs (expected - got) < tolerance,
+	                   file, line, "Expected %lf got %lf", expected, got);
 }
 
 

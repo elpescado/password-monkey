@@ -75,8 +75,12 @@ ctest_case_get_data (CTestCase *tc);
 
 void ctest_case_assert              (CTestCase *tc, gint condition, const gchar *file, gint line, const gchar *msg, ...);
 //void ctest_case_assert_true         (CTestCase *tc, gint condition, const gchar *file, gint line);
-void ctest_case_assert_equal_int    (CTestCase *tc, gint i1, gint i2, const gchar *file, gint line);
-void ctest_case_assert_equal_long   (CTestCase *tc, glong l1, glong l2, const gchar *file, gint line);
+void ctest_case_assert_equali       (CTestCase *tc, gint i1, gint i2, const gchar *file, gint line);
+void ctest_case_assert_equall       (CTestCase *tc, glong l1, glong l2, const gchar *file, gint line);
+void ctest_case_assert_equals       (CTestCase *tc, gshort s1, gshort s2, const gchar *file, gint line);
+void ctest_case_assert_equalc       (CTestCase *tc, gchar c1, gchar c2, const gchar *file, gint line);
+void ctest_case_assert_equalf       (CTestCase *tc, gfloat f1,  gfloat f2,  gfloat tolerance,  const gchar *file, gint line);
+void ctest_case_assert_equald       (CTestCase *tc, gdouble g1, gdouble d2, gdouble tolerance, const gchar *file, gint line);
 void ctest_case_assert_equal_string (CTestCase *tc, const gchar *s1, const gchar *s2, const gchar *file, gint line);
 void ctest_case_assert_not_reached  (CTestCase *tc, const gchar *file, gint line);
 
@@ -90,6 +94,24 @@ void ctest_case_assert_not_reached  (CTestCase *tc, const gchar *file, gint line
 
 #define ctest_assert_equal(tc, expected, got)\
 	ctest_case_assert(tc, (expected)==(got), __FILE__, __LINE__, "Expected `"  #expected "' got `" #got "'")
+
+#define ctest_assert_equali(tc, expected, got)\
+	ctest_case_assert_equali (tc, expected, got, __FILE__, __LINE__)
+
+#define ctest_assert_equall(tc, expected, got)\
+	ctest_case_assert_equall (tc, expected, got, __FILE__, __LINE__)
+
+#define ctest_assert_equals(tc, expected, got)\
+	ctest_case_assert_equals (tc, expected, got, __FILE__, __LINE__)
+
+#define ctest_assert_equalc(tc, expected, got)\
+	ctest_case_assert_equalc (tc, expected, got, __FILE__, __LINE__)
+
+#define ctest_assert_equalf(tc, expected, got, tolerance)\
+	ctest_case_assert_equalf (tc, expected, got, tolerance, __FILE__, __LINE__)
+
+#define ctest_assert_equald(tc, expected, got, tolerance)\
+	ctest_case_assert_equald (tc, expected, got, tolerance, __FILE__, __LINE__)
 
 #define ctest_assert_equal_string(tc, expected, got)\
 	ctest_case_assert_equal_string(tc, expected, got, __FILE__, __LINE__)
