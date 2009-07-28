@@ -38,9 +38,6 @@ int main (int argc, char *argv[])
 
 	ctest_run (test);
 
-	//ctest_free (test);
-
-	//return EXIT_SUCCESS;
 	return ctest_finish (test);
 }
 
