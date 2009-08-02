@@ -17,7 +17,7 @@ struct testitem sprintf_data[] = {
 	{-2,          "-2"},
 	{2147483647,  "2147483647"},
 	{-2147483648, "-2147483648"},
-	{7, "9"}
+	{7, "7"}
 };
 
 
@@ -41,7 +41,7 @@ test_atoi (CTestCase *tc, gpointer test_data)
 
 	int i = atoi (data->str);
 
-	ctest_assert_equal (tc, data->num, i);
+	ctest_assert_equali (tc, data->num, i);
 }
 
 
@@ -53,7 +53,7 @@ test_strtol (CTestCase *tc, gpointer test_data)
 	char *end;
 	long int i = strtol (data->str, &end, 10);
 
-	ctest_assert_equal (tc, data->num, i);
+	ctest_assert_equall (tc, data->num, i);
 	ctest_assert_equal_string (tc, "", end);
 }
 
