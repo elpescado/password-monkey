@@ -1,0 +1,5 @@
+content	passwordmonkey	content/
+locale	passwordmonkey	en-US	locale/en-US/
+skin	passwordmonkey	classic/1.0	skin/
+overlay	chrome://browser/content/browser.xul	chrome://passwordmonkey/content/firefoxOverlay.xul
+style	chrome://global/content/customizeToolbar.xul	chrome://passwordmonkey/skin/overlay.css
