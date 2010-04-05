@@ -1,5 +1,5 @@
-CFLAGS=`pkg-config --cflags glib-2.0` -DUSE_OPENSSL
-LDFLAGS=`pkg-config --libs glib-2.0`  -lcrypto
+CFLAGS=`pkg-config --cflags glib-2.0` 
+LDFLAGS=`pkg-config --libs glib-2.0`  
 
 all: pwmonkey
 
