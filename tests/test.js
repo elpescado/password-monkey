@@ -136,11 +136,37 @@ function testTruncate ()
 }
 
 
+function testPwmonkey ()
+{
+	var data = loadCsv ("data/pwmonkey.csv");
+	var ok = 0;
+	var total = 0;
+
+	for (var i  in data) {
+		total++;
+		var password = data[i][0];
+		var domain = data[i][1];
+		var num = data[i][2];
+		var expectedRes = data[i][3];
+
+
+		var res = PasswordMonkey.generatePass (domain, password, num);
+
+		if (expectedRes == res)
+			ok++;
+	}
+
+	print ("PWMONKEY: " + ok + " of " + total + " assertions ok");
+}
+
+
+
 try {
 testIdent ();
 testHash ();
 testEncode ();
 testTruncate ();
+testPwmonkey ();
 } catch (e) {
 	for (var i in e) {
 		print (i + ": " + e[i]);

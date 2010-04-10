@@ -103,6 +103,30 @@ test_truncate (CTestCase *tc, gpointer data)
 
 
 
+void
+test_pwmonkey (CTestCase *tc, gpointer data)
+{
+	CsvFile *csv = csv_file_load ("data/pwmonkey.csv");
+
+	int i;
+	for (i = 0; i < csv_file_num_rows (csv); i++) {
+		const gchar *password = csv_file_get_data (csv, i, 0);
+		const gchar *domain = csv_file_get_data (csv, i, 1);
+		const gchar *len_str = csv_file_get_data (csv, i, 2);
+		const gchar *expected = csv_file_get_data (csv, i, 3);
+		gint len = atoi (len_str);
+
+		gchar *res = password_monkey_generate_pass (domain, password, len);
+		ctest_assert_equal_string (tc, expected, res);
+		g_free (res);		
+	}
+
+	csv_file_free (csv);
+}
+
+
+
+
 int main (int argc, char *argv[])
 {
 	CTest *test = ctest_new (NULL);
@@ -111,6 +135,7 @@ int main (int argc, char *argv[])
 	ctest_add_case (test, test_hash);
 	ctest_add_case (test, test_encode);
 	ctest_add_case (test, test_truncate);
+	ctest_add_case (test, test_pwmonkey);
 
 	ctest_run (test);
 
