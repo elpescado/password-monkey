@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+
+<dialog
+    id="pwmonkey-window"
+    title="Password Monkey"
+    orient="vertical"
+    buttons="accept,cancel"
+    xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+	<dialogheader title="My dialog" description="Example dialog"/>
+
+	<grid flex="1">
+		<rows>
+			<row>
+				<label value="Master password"/>
+				<textbox id="password" />
+			</row>
+			<row>
+				<label value="Domain"/>
+				<textbox id="domain"/>
+			</row>
+		</rows>
+	</grid>
+</dialog>
+
