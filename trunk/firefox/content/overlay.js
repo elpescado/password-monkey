@@ -40,24 +40,34 @@ var passwordmonkey = {
     this.initialized = true;
     this.strings = document.getElementById("passwordmonkey-strings");
     document.getElementById("contentAreaContextMenu")
-            .addEventListener("popupshowing", function(e) { this.showContextMenu(e); }, false);
+            .addEventListener("popupshowing", function(e) { passwordmonkey.showContextMenu(e); }, false);
   },
 
   showContextMenu: function(event) {
     // show or hide the menuitem based on what the context menu is on
     // see http://kb.mozillazine.org/Adding_items_to_menus
-    document.getElementById("context-passwordmonkey").hidden = gContextMenu.onImage;
+	var str = "gContextMenu:\n";
+	for (var i in gContextMenu){
+		str += i + ": " + gContextMenu[i] + "\n";
+	}
+	//window.alert (str);
+    document.getElementById("context-passwordmonkey").hidden = gContextMenu.target.nodeName != "INPUT";
   },
   onMenuItemCommand: function(e) {
     var promptService = Components.classes["@mozilla.org/embedcomp/prompt-service;1"]
                                   .getService(Components.interfaces.nsIPromptService);
-    promptService.alert(window, this.strings.getString("helloMessageTitle"),
-                                this.strings.getString("helloMessage"));
+ //   promptService.alert(window, this.strings.getString("helloMessageTitle"),
+ //                               this.strings.getString("helloMessage"));
+	passwordmonkey.showDialog ();
   },
   onToolbarButtonCommand: function(e) {
     // just reuse the function above.  you can change this, obviously!
     passwordmonkey.onMenuItemCommand(e);
-  }
+  },
+
+	showDialog: function (e) {
+		var win = window.openDialog ("chrome://passwordmonkey/content/pwmonkey.xul", "password-monkey");
+	}
 
 };
 window.addEventListener("load", function(e) { passwordmonkey.onLoad(e); }, false);
