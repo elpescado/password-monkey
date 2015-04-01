@@ -1,0 +1,1 @@
+Password Monkey is a little tool that generates passwords for various websites based on master password - so that user can use one password for many sites and still don't reveal it to any awebsite.
